@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop | JF Furniture</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="shopping-page">
+  <header class="site-header">
+    <a class="brand" href="index.html">JF</a>
+    <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html#home">Home</a>
+      <a href="shopping.html">Shop</a>
+      <a href="index.html#about">About</a>
+    </nav>
+    <div class="header-actions" aria-label="Quick actions">
+      <button class="icon-button cart-toggle" type="button" aria-label="View cart" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M3 4h2l2.2 10.1a1 1 0 0 0 1 .8h8.7a1 1 0 0 0 1-.8L20 7H7.1"></path>
+          <circle cx="10" cy="19" r="1.3"></circle>
+          <circle cx="17" cy="19" r="1.3"></circle>
+        </svg>
+        <span class="cart-count" data-cart-count>0</span>
+      </button>
+      <button class="icon-button search-toggle" type="button" aria-label="Search" aria-expanded="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6"></circle>
+          <path d="m20 20-4.2-4.2"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="shopping-main">
+    <section class="shopping-hero">
+      <div>
+        <p class="eyebrow shopping-eyebrow">Furniture Catalog</p>
+        <h1>Find the right chair for your space</h1>
+        <p class="shopping-copy">Search by name and refine by category, material, or price range to browse the collection faster.</p>
+      </div>
+      <a class="shopping-home-link" href="index.html">Back to home</a>
+    </section>
+
+    <section class="shop-controls">
+      <label class="search-box" for="productSearch">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6"></circle>
+          <path d="m20 20-4.2-4.2"></path>
+        </svg>
+        <input id="productSearch" type="search" placeholder="Search product name">
+      </label>
+
+      <div class="filter-row">
+        <label class="filter-control">
+          <span>Category</span>
+          <select id="categoryFilter">
+            <option value="all">All</option>
+            <option value="Dining">Dining</option>
+            <option value="Lounge">Lounge</option>
+          </select>
+        </label>
+
+        <label class="filter-control">
+          <span>Material</span>
+          <select id="materialFilter">
+            <option value="all">All</option>
+            <option value="Plastic">Plastic</option>
+            <option value="Wood">Wood</option>
+            <option value="Rattan">Rattan</option>
+          </select>
+        </label>
+
+        <label class="filter-control">
+          <span>Price</span>
+          <select id="priceFilter">
+            <option value="all">All</option>
+            <option value="under-100">Under Rp 100,000</option>
+            <option value="100-150">Rp 100,000 - Rp 150,000</option>
+            <option value="150-up">Above Rp 150,000</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="shopping-results">
+      <div class="shopping-results-bar">
+        <p id="resultSummary">Showing 4 products</p>
+        <div class="shopping-results-actions">
+          <label class="sort-control">
+            <span>Sort</span>
+            <select id="sortFilter">
+              <option value="featured">Featured</option>
+              <option value="price-asc">Lowest price</option>
+              <option value="price-desc">Highest price</option>
+              <option value="name-asc">A-Z</option>
+            </select>
+          </label>
+          <button class="reset-filter-button" id="resetFilters" type="button">Reset filters</button>
+        </div>
+      </div>
+
+      <div class="active-filters" id="activeFilters" hidden></div>
+
+      <div class="shopping-skeletons" id="shoppingSkeletons" aria-hidden="true">
+        <div class="shopping-skeleton-card"></div>
+        <div class="shopping-skeleton-card"></div>
+      </div>
+      <div class="shopping-grid" id="shoppingGrid"></div>
+      <div class="shopping-empty" id="shoppingEmpty" hidden>
+        <strong>No products match your search.</strong>
+        <p>Try another keyword, change the filters, or reset everything to browse the full catalog again.</p>
+      </div>
+    </section>
+  </main>
+
+  <div class="cart-overlay" data-cart-overlay hidden></div>
+  <aside class="cart-drawer" data-cart-drawer aria-hidden="true">
+    <div class="cart-drawer-header">
+      <div>
+        <p class="cart-kicker">Your Cart</p>
+        <h2>Selected Items</h2>
+      </div>
+      <button class="cart-close" type="button" data-cart-close aria-label="Close cart">&times;</button>
+    </div>
+    <div class="cart-items" data-cart-items></div>
+    <div class="cart-empty" data-cart-empty>Your cart is still empty.</div>
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total</span>
+        <strong data-cart-total>Rp 0</strong>
+      </div>
+      <a class="cart-checkout" href="checkout.html">Checkout</a>
+    </div>
+  </aside>
+  <div class="search-overlay" data-search-overlay hidden></div>
+  <div class="search-popover" data-search-popover aria-hidden="true">
+    <form class="search-form" action="shopping.html" method="get">
+      <label class="search-popover-input" for="navSearchShop">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="11" cy="11" r="6"></circle>
+          <path d="m20 20-4.2-4.2"></path>
+        </svg>
+        <input id="navSearchShop" name="q" type="search" placeholder="Search furniture">
+      </label>
+      <button class="search-submit" type="submit">Search</button>
+    </form>
+  </div>
+  <div class="toast-stack" data-toast-stack aria-live="polite" aria-atomic="true"></div>
+
+  <button class="back-to-top" type="button" data-back-to-top aria-label="Back to top">&#8593;</button>
+  <script src="catalog.js"></script>
+  <script src="cart.js"></script>
+  <script src="shopping.js"></script>
+</body>
+</html>
