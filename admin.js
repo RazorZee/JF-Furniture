@@ -11,6 +11,8 @@ const adminName = document.getElementById("adminName");
 const adminSlug = document.getElementById("adminSlug");
 const adminImageUrl = document.getElementById("adminImageUrl");
 const adminImageFile = document.getElementById("adminImageFile");
+const adminPreviewImage = document.getElementById("adminPreviewImage");
+const adminPreviewPlaceholder = document.getElementById("adminPreviewPlaceholder");
 const adminUploadButton = document.getElementById("adminUploadButton");
 const adminCancelEditButton = document.getElementById("adminCancelEditButton");
 const adminStatus = document.getElementById("adminStatus");
@@ -22,6 +24,7 @@ const adminSupabase = window.supabase && typeof SUPABASE_URL !== "undefined" && 
   : null;
 let editingProductId = null;
 let adminProducts = [];
+let currentPreviewObjectUrl = null;
 
 function setAuthStatus(message, isError = false) {
   if (!adminAuthStatus) {
@@ -56,12 +59,38 @@ function formatPrice(value) {
   return `Rp ${Number(value || 0).toLocaleString("id-ID")}`;
 }
 
+function clearObjectPreview() {
+  if (currentPreviewObjectUrl) {
+    URL.revokeObjectURL(currentPreviewObjectUrl);
+    currentPreviewObjectUrl = null;
+  }
+}
+
+function showPreview(src) {
+  if (!adminPreviewImage || !adminPreviewPlaceholder) {
+    return;
+  }
+
+  if (!src) {
+    adminPreviewImage.hidden = true;
+    adminPreviewImage.removeAttribute("src");
+    adminPreviewPlaceholder.hidden = false;
+    return;
+  }
+
+  adminPreviewImage.src = src;
+  adminPreviewImage.hidden = false;
+  adminPreviewPlaceholder.hidden = true;
+}
+
 function resetAdminForm() {
   if (!adminForm) {
     return;
   }
 
   adminForm.reset();
+  clearObjectPreview();
+  showPreview("");
   editingProductId = null;
   if (adminSlug) {
     adminSlug.dataset.editedManually = "";
@@ -97,6 +126,8 @@ function fillFormForEdit(product) {
   document.getElementById("adminDescription").value = product.description || "";
   adminImageUrl.value = product.image_url || "";
   document.getElementById("adminFeatured").checked = Boolean(product.is_featured);
+  clearObjectPreview();
+  showPreview(product.image_url || "");
   if (adminCancelEditButton) {
     adminCancelEditButton.hidden = false;
   }
@@ -258,6 +289,8 @@ async function uploadImageToSupabase() {
     adminImageUrl.value = data.publicUrl;
   }
 
+  clearObjectPreview();
+  showPreview(data.publicUrl);
   setAdminStatus("Gambar berhasil diupload.");
   return data.publicUrl;
 }
@@ -271,6 +304,33 @@ if (adminName && adminSlug) {
 
   adminSlug.addEventListener("input", () => {
     adminSlug.dataset.editedManually = "true";
+  });
+}
+
+if (adminImageFile) {
+  adminImageFile.addEventListener("change", () => {
+    const file = adminImageFile.files?.[0];
+
+    clearObjectPreview();
+
+    if (!file) {
+      showPreview(adminImageUrl?.value?.trim() || "");
+      return;
+    }
+
+    currentPreviewObjectUrl = URL.createObjectURL(file);
+    showPreview(currentPreviewObjectUrl);
+  });
+}
+
+if (adminImageUrl) {
+  adminImageUrl.addEventListener("input", () => {
+    if (adminImageFile?.files?.length) {
+      return;
+    }
+
+    clearObjectPreview();
+    showPreview(adminImageUrl.value.trim());
   });
 }
 

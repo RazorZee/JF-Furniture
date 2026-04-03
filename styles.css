@@ -813,6 +813,30 @@ button {
   min-height: 120px;
 }
 
+.admin-image-preview {
+  display: grid;
+  place-items: center;
+  min-height: 220px;
+  padding: 16px;
+  border: 1px dashed rgba(31, 27, 24, 0.16);
+  border-radius: 22px;
+  background: #fcfbf9;
+  overflow: hidden;
+}
+
+.admin-image-preview img {
+  width: 100%;
+  max-height: 320px;
+  object-fit: contain;
+  border-radius: 16px;
+}
+
+.admin-image-preview p {
+  margin: 0;
+  color: #7a726b;
+  text-align: center;
+}
+
 .admin-check {
   display: inline-flex;
   align-items: center;
@@ -993,6 +1017,268 @@ button {
   .admin-product-card {
     grid-template-columns: 1fr;
   }
+}
+
+.about-page {
+  background: #f1eee8;
+}
+
+.about-main {
+  padding: 2rem 1.25rem 3rem;
+}
+
+.about-hero,
+.about-story,
+.about-values,
+.about-cta {
+  border-radius: 1.8rem;
+  border: 1px solid rgba(118, 112, 105, 0.1);
+  box-shadow: 0 20px 48px rgba(32, 26, 23, 0.06);
+}
+
+.about-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 420px);
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem;
+  background:
+    radial-gradient(circle at top right, rgba(255, 248, 232, 0.76), transparent 18rem),
+    linear-gradient(135deg, #5f5c58, #8f7f6f);
+  color: #f8f4ee;
+}
+
+.about-hero-copy h1,
+.about-section-heading h2,
+.about-cta h2 {
+  margin: 0;
+}
+
+.about-hero-copy h1 {
+  font-size: clamp(2.2rem, 4.6vw, 4rem);
+  line-height: 1.02;
+}
+
+.about-hero-copy p:last-child {
+  max-width: 40rem;
+  margin: 1rem 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+}
+
+.about-hero-media {
+  display: grid;
+  place-items: center;
+  min-height: 360px;
+}
+
+.about-hero-media img {
+  width: min(100%, 380px);
+  object-fit: contain;
+}
+
+.about-story,
+.about-values,
+.about-cta {
+  margin-top: 1.25rem;
+  padding: 1.6rem;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.about-dark-eyebrow {
+  color: #8d857e;
+}
+
+.about-section-heading h2 {
+  font-size: clamp(1.6rem, 3vw, 2.5rem);
+  line-height: 1.1;
+  color: #2f2a27;
+}
+
+.about-story-grid,
+.about-values-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+.about-story-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.about-values-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.about-story-card,
+.about-value-item {
+  padding: 1.2rem;
+  border-radius: 1.35rem;
+  background: #f8f5ef;
+  border: 1px solid rgba(118, 112, 105, 0.08);
+}
+
+.about-story-card h3,
+.about-story-card p,
+.about-value-item h3,
+.about-value-item p,
+.about-value-item span {
+  margin: 0;
+}
+
+.about-story-card h3,
+.about-value-item h3 {
+  margin-bottom: 0.6rem;
+  font-size: 1.1rem;
+}
+
+.about-story-card p,
+.about-value-item p {
+  color: #6b645e;
+  line-height: 1.7;
+}
+
+.about-value-item span {
+  display: inline-flex;
+  margin-bottom: 0.8rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #9a9086;
+}
+
+.about-cta {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.about-cta-actions {
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.about-cta-button {
+  margin-top: 0;
+  background: #171413;
+  color: #fff;
+  border-color: transparent;
+}
+
+.about-secondary-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.95rem 1.4rem;
+  border-radius: 999px;
+  background: #ece7df;
+  color: #3f3b38;
+}
+
+.contact-page {
+  background: #f1eee8;
+}
+
+.contact-main {
+  padding: 2rem 1.25rem 3rem;
+}
+
+.contact-hero,
+.contact-grid,
+.contact-note {
+  border-radius: 1.8rem;
+  border: 1px solid rgba(118, 112, 105, 0.1);
+  box-shadow: 0 20px 48px rgba(32, 26, 23, 0.06);
+}
+
+.contact-hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: end;
+  padding: 2rem;
+  background:
+    radial-gradient(circle at top right, rgba(255, 248, 232, 0.8), transparent 18rem),
+    linear-gradient(135deg, #5f5c58, #8f7f6f);
+  color: #f8f4ee;
+}
+
+.contact-hero h1,
+.contact-card h2,
+.contact-note h2 {
+  margin: 0;
+}
+
+.contact-hero p:last-child {
+  max-width: 42rem;
+  margin: 0.8rem 0 0;
+  color: rgba(255, 255, 255, 0.82);
+  line-height: 1.7;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 1.25rem;
+  padding: 1.2rem;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.contact-card {
+  padding: 1.4rem;
+  border-radius: 1.35rem;
+  background: #f8f5ef;
+  border: 1px solid rgba(118, 112, 105, 0.08);
+}
+
+.contact-kicker {
+  margin: 0 0 0.6rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #8d857e;
+}
+
+.contact-card p {
+  color: #6b645e;
+  line-height: 1.7;
+}
+
+.contact-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 0.9rem;
+  padding: 0.95rem 1.4rem;
+  border-radius: 999px;
+  background: #ece7df;
+  color: #3f3b38;
+}
+
+.contact-action.is-dark {
+  background: #171413;
+  color: #fff;
+}
+
+.contact-note {
+  margin-top: 1.25rem;
+  padding: 1.6rem;
+  background: rgba(255, 255, 255, 0.78);
+}
+
+.contact-note h2,
+.contact-note p {
+  margin: 0;
+}
+
+.contact-note p:last-child {
+  margin-top: 0.8rem;
+  color: #6b645e;
+  line-height: 1.7;
 }
 
 .detail-page {
@@ -1730,6 +2016,14 @@ button {
   min-height: 12rem;
 }
 
+.footer-tagline {
+  margin: 0.8rem 0 0;
+  max-width: 15rem;
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.7;
+  font-size: 0.88rem;
+}
+
 .socials {
   display: flex;
   flex-wrap: wrap;
@@ -1858,6 +2152,9 @@ button {
   }
 
   .shopping-hero,
+  .about-hero,
+  .contact-hero,
+  .about-cta,
   .checkout-hero,
   .shopping-results-bar,
   .shopping-card-top,
@@ -1867,6 +2164,9 @@ button {
   }
 
   .filter-row,
+  .about-story-grid,
+  .about-values-grid,
+  .contact-grid,
   .shopping-grid,
   .shopping-card,
   .recommendation-grid,
@@ -2006,6 +2306,24 @@ button {
 
   .shopping-hero {
     padding: 1.4rem;
+  }
+
+  .about-main {
+    padding-inline: 1rem;
+  }
+
+  .contact-main {
+    padding-inline: 1rem;
+  }
+
+  .about-hero,
+  .about-story,
+  .about-values,
+  .contact-hero,
+  .contact-grid,
+  .contact-note,
+  .about-cta {
+    padding: 1.2rem;
   }
 
   .shop-controls,

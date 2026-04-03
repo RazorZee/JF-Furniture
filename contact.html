@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shop | JF Furniture</title>
+  <title>Contact Support | JF Furniture</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body class="shopping-page">
+<body class="contact-page">
   <header class="site-header">
     <a class="brand" href="index.html">JF</a>
     <button class="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false">
@@ -15,7 +15,7 @@
       <span></span>
     </button>
     <nav class="site-nav" aria-label="Primary navigation">
-      <a href="index.html#home">Home</a>
+      <a href="index.html">Home</a>
       <a href="shopping.html">Shop</a>
       <a href="about.html">About</a>
     </nav>
@@ -37,85 +37,38 @@
     </div>
   </header>
 
-  <main class="shopping-main">
-    <section class="shopping-hero">
+  <main class="contact-main">
+    <section class="contact-hero">
       <div>
-        <p class="eyebrow shopping-eyebrow">Furniture Catalog</p>
-        <h1>Find the right chair for your space</h1>
-        <p class="shopping-copy">Search by name and refine by category, material, or price range to browse the collection faster.</p>
+        <p class="eyebrow">Contact Support</p>
+        <h1>Need help with an order or product question?</h1>
+        <p>Reach JF Furniture directly through email or WhatsApp. We are ready to help with product details, stock questions, delivery information, and custom order support.</p>
       </div>
-      <a class="shopping-home-link" href="index.html">Back to home</a>
+      <a class="shopping-home-link" href="shopping.html">Browse Products</a>
     </section>
 
-    <section class="shop-controls">
-      <label class="search-box" for="productSearch">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="11" cy="11" r="6"></circle>
-          <path d="m20 20-4.2-4.2"></path>
-        </svg>
-        <input id="productSearch" type="search" placeholder="Search product name">
-      </label>
+    <section class="contact-grid">
+      <article class="contact-card">
+        <p class="contact-kicker">Email Support</p>
+        <h2>jokomuhammad08@gmail.com</h2>
+        <p>Best for detailed questions, order follow-up, or sending room references.</p>
+        <a class="contact-action" href="mailto:jokomuhammad08@gmail.com?subject=JF%20Furniture%20Support">Send Email</a>
+      </article>
 
-      <div class="filter-row">
-        <label class="filter-control">
-          <span>Category</span>
-          <select id="categoryFilter">
-            <option value="all">All</option>
-            <option value="Dining">Dining</option>
-            <option value="Lounge">Lounge</option>
-          </select>
-        </label>
-
-        <label class="filter-control">
-          <span>Material</span>
-          <select id="materialFilter">
-            <option value="all">All</option>
-            <option value="Plastic">Plastic</option>
-            <option value="Wood">Wood</option>
-            <option value="Rattan">Rattan</option>
-          </select>
-        </label>
-
-        <label class="filter-control">
-          <span>Price</span>
-          <select id="priceFilter">
-            <option value="all">All</option>
-            <option value="under-100">Under Rp 100,000</option>
-            <option value="100-150">Rp 100,000 - Rp 150,000</option>
-            <option value="150-up">Above Rp 150,000</option>
-          </select>
-        </label>
-      </div>
+      <article class="contact-card">
+        <p class="contact-kicker">WhatsApp</p>
+        <h2>0812-2725-6442</h2>
+        <p>Fastest way to ask about stock, price confirmation, or direct furniture orders.</p>
+        <a class="contact-action is-dark" href="https://wa.me/6281227256442?text=Halo%20JF%20Furniture%2C%20saya%20ingin%20bertanya%20tentang%20produk." target="_blank" rel="noreferrer">Chat on WhatsApp</a>
+      </article>
     </section>
 
-    <section class="shopping-results">
-      <div class="shopping-results-bar">
-        <p id="resultSummary">Showing 4 products</p>
-        <div class="shopping-results-actions">
-          <label class="sort-control">
-            <span>Sort</span>
-            <select id="sortFilter">
-              <option value="featured">Featured</option>
-              <option value="price-asc">Lowest price</option>
-              <option value="price-desc">Highest price</option>
-              <option value="name-asc">A-Z</option>
-            </select>
-          </label>
-          <button class="reset-filter-button" id="resetFilters" type="button">Reset filters</button>
-        </div>
+    <section class="contact-note">
+      <div>
+        <p class="eyebrow about-dark-eyebrow">Support Hours</p>
+        <h2>Response as soon as possible during active business hours.</h2>
       </div>
-
-      <div class="active-filters" id="activeFilters" hidden></div>
-
-      <div class="shopping-skeletons" id="shoppingSkeletons" aria-hidden="true">
-        <div class="shopping-skeleton-card"></div>
-        <div class="shopping-skeleton-card"></div>
-      </div>
-      <div class="shopping-grid" id="shoppingGrid"></div>
-      <div class="shopping-empty" id="shoppingEmpty" hidden>
-        <strong>No products match your search.</strong>
-        <p>Try another keyword, change the filters, or reset everything to browse the full catalog again.</p>
-      </div>
+      <p>For quicker assistance, include the product name or screenshot from the website when you contact support.</p>
     </section>
   </main>
 
@@ -183,12 +136,12 @@
   <div class="search-overlay" data-search-overlay hidden></div>
   <div class="search-popover" data-search-popover aria-hidden="true">
     <form class="search-form" action="shopping.html" method="get">
-      <label class="search-popover-input" for="navSearchShop">
+      <label class="search-popover-input" for="navSearchContact">
         <svg viewBox="0 0 24 24" aria-hidden="true">
           <circle cx="11" cy="11" r="6"></circle>
           <path d="m20 20-4.2-4.2"></path>
         </svg>
-        <input id="navSearchShop" name="q" type="search" placeholder="Search furniture">
+        <input id="navSearchContact" name="q" type="search" placeholder="Search furniture">
       </label>
       <button class="search-submit" type="submit">Search</button>
     </form>
@@ -198,8 +151,5 @@
   <button class="back-to-top" type="button" data-back-to-top aria-label="Back to top">&#8593;</button>
   <script src="catalog.js"></script>
   <script src="cart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script src="supabase-config.js"></script>
-  <script src="shopping.js"></script>
 </body>
 </html>
