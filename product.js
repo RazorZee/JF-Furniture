@@ -66,6 +66,8 @@ function renderThumbs(images) {
     const img = document.createElement("img");
     img.src = image;
     img.alt = `${currentProduct.title} thumbnail ${index + 1}`;
+    img.loading = "lazy";
+    img.decoding = "async";
     button.appendChild(img);
 
     button.addEventListener("click", () => {
@@ -87,6 +89,7 @@ function renderRecommendations() {
   }
 
   recommendationGrid.innerHTML = "";
+  const fragment = document.createDocumentFragment();
 
   productCollection
     .filter((item) => item.key !== currentProductKey)
@@ -97,7 +100,7 @@ function renderRecommendations() {
       card.href = `product.html?product=${item.key}`;
       card.innerHTML = `
         <div class="recommendation-media">
-          <img src="${item.images[0]}" alt="${item.title}">
+          <img src="${item.images[0]}" alt="${item.title}" loading="lazy" decoding="async">
         </div>
         <div class="recommendation-body">
           <p>${item.category}</p>
@@ -105,8 +108,10 @@ function renderRecommendations() {
           <strong>${item.price}</strong>
         </div>
       `;
-      recommendationGrid.appendChild(card);
+      fragment.appendChild(card);
     });
+
+  recommendationGrid.appendChild(fragment);
 }
 
 function bindAddToCart() {

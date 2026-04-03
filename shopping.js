@@ -96,6 +96,7 @@ function populateDynamicFilterOptions(selectElement, values) {
 
 function renderProducts(list, query) {
   shoppingGrid.innerHTML = "";
+  const fragment = document.createDocumentFragment();
 
   if (list.length === 0) {
     shoppingEmpty.hidden = false;
@@ -112,7 +113,7 @@ function renderProducts(list, query) {
 
     card.innerHTML = `
       <a class="shopping-card-media" href="product.html?product=${product.key}">
-        <img src="${product.images[0]}" alt="${product.title}">
+        <img src="${product.images[0]}" alt="${product.title}" loading="lazy" decoding="async">
       </a>
       <div class="shopping-card-body">
         <div class="shopping-card-top">
@@ -141,8 +142,10 @@ function renderProducts(list, query) {
       });
     });
 
-    shoppingGrid.appendChild(card);
+    fragment.appendChild(card);
   });
+
+  shoppingGrid.appendChild(fragment);
 }
 
 function renderActiveFilters() {

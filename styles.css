@@ -24,11 +24,14 @@ body {
   font-family: "Trebuchet MS", "Gill Sans", sans-serif;
   background: #efefef;
   color: var(--text-dark);
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 img {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 a {
@@ -221,6 +224,8 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
   min-width: 8.5rem;
   padding: 0.95rem 1.5rem;
   margin-top: 1rem;
@@ -233,7 +238,35 @@ button {
 
 .button-primary:hover,
 .show-more:hover {
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+  box-shadow: 0 18px 32px rgba(27, 23, 22, 0.16);
+}
+
+.button-primary::after,
+.show-more::after,
+.cart-button::after,
+.contact-action::after,
+.checkout-place-order::after,
+.detail-cart-button::after,
+.shopping-add-button::after {
+  content: "";
+  position: absolute;
+  inset: -140% auto -140% -20%;
+  width: 38%;
+  transform: rotate(18deg) translateX(-180%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.34), transparent);
+  transition: transform 0.65s ease;
+  pointer-events: none;
+}
+
+.button-primary:hover::after,
+.show-more:hover::after,
+.cart-button:hover::after,
+.contact-action:hover::after,
+.checkout-place-order:hover::after,
+.detail-cart-button:hover::after,
+.shopping-add-button:hover::after {
+  transform: rotate(18deg) translateX(420%);
 }
 
 .hero-media {
@@ -258,7 +291,8 @@ button {
   position: relative;
   width: min(100%, 500px);
   object-fit: contain;
-  animation: float-in 0.8s ease both;
+  animation: float-in 0.8s ease both, hero-float 6s ease-in-out infinite;
+  transition: transform 0.25s ease;
 }
 
 .hero-controls {
@@ -306,6 +340,8 @@ button {
 .products {
   padding: 0 0 2rem;
   background: #efefef;
+  content-visibility: auto;
+  contain-intrinsic-size: 900px;
 }
 
 .section-heading {
@@ -342,9 +378,37 @@ button {
   transition: transform 0.22s ease, box-shadow 0.22s ease;
 }
 
+.product-card::before,
+.shopping-card::before,
+.recommendation-card::before,
+.about-story-card::before,
+.about-value-item::before,
+.contact-card::before,
+.admin-product-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), transparent 40%);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+
+.product-card:hover,
 .product-card-link:hover .product-card {
   transform: translateY(-6px);
   box-shadow: 0 22px 42px rgba(24, 21, 19, 0.22);
+}
+
+.product-card:hover::before,
+.shopping-card:hover::before,
+.recommendation-card:hover::before,
+.about-story-card:hover::before,
+.about-value-item:hover::before,
+.contact-card:hover::before,
+.admin-product-card:hover::before {
+  opacity: 1;
 }
 
 .product-image {
@@ -380,12 +444,15 @@ button {
   justify-content: center;
   align-items: center;
   gap: 0.45rem;
+  position: relative;
+  overflow: hidden;
   padding: 0.72rem 0.9rem;
   border: 0;
   border-radius: 999px;
   background: var(--bg-card-inner);
   color: #504e4c;
   cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
 }
 
 .homepage-cart-button {
@@ -412,6 +479,8 @@ button {
   padding: 2.25rem 1.2rem 4rem;
   background: var(--bg-dark);
   color: rgba(255, 255, 255, 0.88);
+  content-visibility: auto;
+  contain-intrinsic-size: 420px;
 }
 
 .cart-overlay {
@@ -760,6 +829,8 @@ button {
 
 .admin-list-panel {
   margin-top: 22px;
+  content-visibility: auto;
+  contain-intrinsic-size: 720px;
 }
 
 .admin-topbar {
@@ -912,6 +983,7 @@ button {
 }
 
 .admin-product-card {
+  position: relative;
   display: grid;
   grid-template-columns: 140px minmax(0, 1fr);
   gap: 18px;
@@ -1083,6 +1155,8 @@ button {
   margin-top: 1.25rem;
   padding: 1.6rem;
   background: rgba(255, 255, 255, 0.78);
+  content-visibility: auto;
+  contain-intrinsic-size: 520px;
 }
 
 .about-dark-eyebrow {
@@ -1112,6 +1186,7 @@ button {
 
 .about-story-card,
 .about-value-item {
+  position: relative;
   padding: 1.2rem;
   border-radius: 1.35rem;
   background: #f8f5ef;
@@ -1229,6 +1304,7 @@ button {
 }
 
 .contact-card {
+  position: relative;
   padding: 1.4rem;
   border-radius: 1.35rem;
   background: #f8f5ef;
@@ -1252,6 +1328,8 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  overflow: hidden;
   margin-top: 0.9rem;
   padding: 0.95rem 1.4rem;
   border-radius: 999px;
@@ -1264,10 +1342,62 @@ button {
   color: #fff;
 }
 
+.shopping-card,
+.recommendation-card,
+.about-story-card,
+.about-value-item,
+.contact-card,
+.admin-product-card,
+.shopping-card-media,
+.recommendation-media,
+.detail-gallery,
+.detail-info,
+.checkout-card,
+.shop-controls,
+.shopping-results,
+.about-story,
+.about-values,
+.about-cta,
+.contact-grid,
+.contact-note,
+.admin-panel {
+  transition: transform 0.26s ease, box-shadow 0.26s ease, border-color 0.26s ease;
+}
+
+.shopping-card:hover,
+.recommendation-card:hover,
+.checkout-card:hover,
+.shop-controls:hover,
+.shopping-results:hover,
+.about-story:hover,
+.about-values:hover,
+.about-cta:hover,
+.contact-grid:hover,
+.contact-note:hover,
+.admin-panel:hover {
+  border-color: rgba(118, 112, 105, 0.18);
+  box-shadow: 0 26px 58px rgba(32, 26, 23, 0.09);
+}
+
+.reveal-element {
+  opacity: 0;
+  transform: translateY(28px) scale(0.985);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0ms);
+}
+
+.reveal-element.is-revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
 .contact-note {
   margin-top: 1.25rem;
   padding: 1.6rem;
   background: rgba(255, 255, 255, 0.78);
+  content-visibility: auto;
+  contain-intrinsic-size: 340px;
 }
 
 .contact-note h2,
@@ -1474,6 +1604,8 @@ button {
 
 .recommendations {
   margin-top: 1.35rem;
+  content-visibility: auto;
+  contain-intrinsic-size: 600px;
 }
 
 .section-heading-left {
@@ -1624,6 +1756,45 @@ button {
   background: rgba(255, 255, 255, 0.78);
   border: 1px solid rgba(118, 112, 105, 0.1);
   box-shadow: 0 20px 48px rgba(32, 26, 23, 0.06);
+  content-visibility: auto;
+  contain-intrinsic-size: 960px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal-element,
+  .reveal-element.is-revealed {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .hero {
+    padding-inline: 2rem;
+  }
+
+  .product-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .shopping-card {
+    grid-template-columns: 180px minmax(0, 1fr);
+  }
+
+  .checkout-layout {
+    grid-template-columns: minmax(0, 1fr) 360px;
+  }
 }
 
 .search-box {
@@ -1863,11 +2034,84 @@ button {
 }
 
 .shopping-skeleton-card {
-  min-height: 260px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 1rem;
+  min-height: 240px;
+  padding: 1rem;
   border-radius: 1.4rem;
-  background: linear-gradient(90deg, #eee8df, #f8f5ef, #eee8df);
-  background-size: 200% 100%;
-  animation: shimmer 1.2s linear infinite;
+  background: #f8f5ef;
+  border: 1px solid rgba(118, 112, 105, 0.08);
+}
+
+.shopping-skeleton-media,
+.shopping-skeleton-line,
+.shopping-skeleton-pill {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, #ebe4da, #f3eee7);
+}
+
+.shopping-skeleton-media::after,
+.shopping-skeleton-line::after,
+.shopping-skeleton-pill::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.42), transparent);
+  animation: shimmer-soft 1.8s ease-in-out infinite;
+}
+
+.shopping-skeleton-media {
+  min-height: 220px;
+  border-radius: 1.1rem;
+}
+
+.shopping-skeleton-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.7rem;
+}
+
+.shopping-skeleton-line {
+  height: 0.88rem;
+  border-radius: 999px;
+}
+
+.shopping-skeleton-line.short {
+  width: 32%;
+}
+
+.shopping-skeleton-line.title {
+  width: 76%;
+  height: 1.15rem;
+}
+
+.shopping-skeleton-line.title.small {
+  width: 52%;
+}
+
+.shopping-skeleton-line.copy {
+  width: 94%;
+}
+
+.shopping-skeleton-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+.shopping-skeleton-pill {
+  width: 132px;
+  height: 2.8rem;
+  border-radius: 999px;
+}
+
+.shopping-skeleton-pill.dark {
+  width: 148px;
+  background: linear-gradient(180deg, #d8d0c5, #e9e3da);
 }
 
 .checkout-page {
@@ -2071,13 +2315,19 @@ button {
   }
 }
 
-@keyframes shimmer {
-  from {
-    background-position: 200% 0;
+@keyframes hero-float {
+  0%, 100% {
+    transform: translateY(0);
   }
 
-  to {
-    background-position: -200% 0;
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes shimmer-soft {
+  100% {
+    transform: translateX(100%);
   }
 }
 
@@ -2174,6 +2424,14 @@ button {
   .checkout-layout {
     grid-template-columns: 1fr;
   }
+
+  .shopping-card-media {
+    min-height: 180px;
+  }
+
+  .shopping-skeleton-card {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 560px) {
@@ -2214,7 +2472,7 @@ button {
   }
 
   .hero-slide {
-    grid-template-columns: minmax(0, 1fr) minmax(120px, 0.82fr);
+    grid-template-columns: minmax(0, 1fr) minmax(110px, 0.78fr);
     gap: 0.8rem;
   }
 
@@ -2251,6 +2509,15 @@ button {
   .product-grid,
   .footer-links {
     grid-template-columns: 1fr;
+  }
+
+  .product-grid {
+    gap: 0.9rem;
+    padding-inline: 1rem;
+  }
+
+  .product-body {
+    padding-inline: 0.8rem;
   }
 
   .detail-main {
@@ -2329,6 +2596,26 @@ button {
   .shop-controls,
   .shopping-results {
     padding: 1rem;
+  }
+
+  .shopping-card {
+    padding: 0.9rem;
+  }
+
+  .shopping-skeleton-card {
+    padding: 0.9rem;
+  }
+
+  .shopping-skeleton-media {
+    min-height: 180px;
+  }
+
+  .shopping-card-body h2 {
+    font-size: 1.18rem;
+  }
+
+  .shopping-card-top strong {
+    font-size: 1rem;
   }
 
   .shopping-results-actions,

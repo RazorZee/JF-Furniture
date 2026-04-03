@@ -47,7 +47,7 @@ function renderCheckout() {
     const row = document.createElement("div");
     row.className = "checkout-item";
     row.innerHTML = `
-      <img src="${item.image}" alt="${item.title}">
+      <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async">
       <div>
         <h3>${item.title}</h3>
         <p>${item.color || "Default"} - Qty ${item.quantity}</p>

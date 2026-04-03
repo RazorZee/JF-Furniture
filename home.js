@@ -90,6 +90,7 @@ function renderHomeProducts(list) {
 
   currentHomeProducts = [...list];
   homeProductGrid.innerHTML = "";
+  const fragment = document.createDocumentFragment();
 
   list.slice(0, 8).forEach((product) => {
     const card = document.createElement("article");
@@ -97,7 +98,7 @@ function renderHomeProducts(list) {
     card.innerHTML = `
       <a class="product-card-link" href="product.html?product=${product.key}">
         <div class="product-image">
-          <img src="${product.images[0]}" alt="${product.title}">
+          <img src="${product.images[0]}" alt="${product.title}" loading="lazy" decoding="async">
         </div>
         <div class="product-body">
           <h3>${product.title}</h3>
@@ -113,8 +114,10 @@ function renderHomeProducts(list) {
         Add to cart
       </button>
     `;
-    homeProductGrid.appendChild(card);
+    fragment.appendChild(card);
   });
+
+  homeProductGrid.appendChild(fragment);
 
   bindHomeCartButtons();
 }

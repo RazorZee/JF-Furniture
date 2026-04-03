@@ -96,6 +96,8 @@ function renderCartDrawer() {
     thumb.className = "cart-item-image";
     thumb.src = item.image;
     thumb.alt = item.title;
+    thumb.loading = "lazy";
+    thumb.decoding = "async";
 
     const info = document.createElement("div");
     info.className = "cart-item-info";
@@ -257,9 +259,65 @@ function addToCart(product) {
   showToast(`${product.title} added to cart`);
 }
 
+function initScrollReveal() {
+  if (!("IntersectionObserver" in window)) {
+    return;
+  }
+
+  const revealTargets = document.querySelectorAll(
+    ".hero, .products, .shopping-hero, .shop-controls, .shopping-results, .detail-layout, .recommendations, .checkout-hero, .checkout-layout, .about-hero, .about-story, .about-values, .about-cta, .contact-hero, .contact-grid, .contact-note, .admin-panel"
+  );
+
+  revealTargets.forEach((element, index) => {
+    element.classList.add("reveal-element");
+    element.style.setProperty("--reveal-delay", `${Math.min(index * 70, 280)}ms`);
+  });
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) {
+        return;
+      }
+
+      entry.target.classList.add("is-revealed");
+      observer.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.16,
+    rootMargin: "0px 0px -8% 0px"
+  });
+
+  revealTargets.forEach((element) => observer.observe(element));
+}
+
+function initAmbientMotion() {
+  const heroMedia = document.querySelector(".hero-media");
+  if (!heroMedia || window.innerWidth < 981 || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    return;
+  }
+
+  const image = heroMedia.querySelector("img");
+  if (!image) {
+    return;
+  }
+
+  heroMedia.addEventListener("pointermove", (event) => {
+    const bounds = heroMedia.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 12;
+    const y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 10;
+    image.style.transform = `translate3d(${x}px, ${y}px, 0) scale(1.015)`;
+  });
+
+  heroMedia.addEventListener("pointerleave", () => {
+    image.style.transform = "";
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   renderCartDrawer();
   syncBackToTopButton();
+  initScrollReveal();
+  initAmbientMotion();
 
   document.querySelectorAll(".cart-toggle").forEach((button) => {
     button.addEventListener("click", openCart);
