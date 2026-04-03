@@ -35,6 +35,13 @@ function matchesPrice(product, selectedPrice) {
   return true;
 }
 
+function splitMaterialValues(materialText) {
+  return String(materialText || "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+}
+
 function escapeHtml(text) {
   return text
     .replace(/&/g, "&amp;")
@@ -193,7 +200,7 @@ function applyFilters() {
   const filtered = products.filter((product) => {
     const matchesQuery = product.title.toLowerCase().includes(query) || product.description.toLowerCase().includes(query);
     const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-    const matchesMaterial = selectedMaterial === "all" || product.material === selectedMaterial;
+    const matchesMaterial = selectedMaterial === "all" || splitMaterialValues(product.material).includes(selectedMaterial);
 
     return matchesQuery && matchesCategory && matchesMaterial && matchesPrice(product, selectedPrice);
   });
@@ -204,7 +211,7 @@ function applyFilters() {
 
 function syncFilterOptions() {
   populateDynamicFilterOptions(categoryFilter, products.map((product) => product.category));
-  populateDynamicFilterOptions(materialFilter, products.map((product) => product.material));
+  populateDynamicFilterOptions(materialFilter, products.flatMap((product) => splitMaterialValues(product.material)));
 }
 
 async function loadProducts() {
