@@ -1,5 +1,6 @@
 const productMap = window.JFProducts || {};
-const products = Object.entries(productMap).map(([key, product]) => ({ key, ...product }));
+const fallbackProducts = Object.entries(productMap).map(([key, product]) => ({ key, ...product }));
+let products = [...fallbackProducts];
 
 const shoppingGrid = document.getElementById("shoppingGrid");
 const shoppingEmpty = document.getElementById("shoppingEmpty");
@@ -13,6 +14,9 @@ const resetFilters = document.getElementById("resetFilters");
 const shoppingSkeletons = document.getElementById("shoppingSkeletons");
 const activeFilters = document.getElementById("activeFilters");
 const searchParams = new URLSearchParams(window.location.search);
+const supabaseClient = window.supabase && typeof SUPABASE_URL !== "undefined" && typeof SUPABASE_ANON_KEY !== "undefined"
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
 
 if (searchParams.has("q")) {
   productSearch.value = searchParams.get("q") || "";
@@ -62,6 +66,32 @@ function sortProducts(list, sortValue) {
     return sorted.sort((a, b) => a.title.localeCompare(b.title));
   }
   return sorted;
+}
+
+function populateDynamicFilterOptions(selectElement, values) {
+  if (!selectElement) {
+    return;
+  }
+
+  const currentValue = selectElement.value || "all";
+  const label = selectElement.id === "categoryFilter" ? "All" : "All";
+  const uniqueValues = [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
+
+  selectElement.innerHTML = "";
+
+  const defaultOption = document.createElement("option");
+  defaultOption.value = "all";
+  defaultOption.textContent = label;
+  selectElement.appendChild(defaultOption);
+
+  uniqueValues.forEach((value) => {
+    const option = document.createElement("option");
+    option.value = value;
+    option.textContent = value;
+    selectElement.appendChild(option);
+  });
+
+  selectElement.value = uniqueValues.includes(currentValue) ? currentValue : "all";
 }
 
 function renderProducts(list, query) {
@@ -169,12 +199,49 @@ function applyFilters() {
   renderActiveFilters();
 }
 
-window.setTimeout(() => {
+function syncFilterOptions() {
+  populateDynamicFilterOptions(categoryFilter, products.map((product) => product.category));
+  populateDynamicFilterOptions(materialFilter, products.map((product) => product.material));
+}
+
+async function loadProducts() {
+  if (!supabaseClient) {
+    if (shoppingSkeletons) {
+      shoppingSkeletons.hidden = true;
+    }
+    syncFilterOptions();
+    applyFilters();
+    return;
+  }
+
+  const { data, error } = await supabaseClient
+    .from("products")
+    .select("*")
+    .order("created_at", { ascending: false });
+
+  if (!error && Array.isArray(data) && data.length > 0) {
+    products = data.map((item) => ({
+      key: item.slug,
+      title: item.name,
+      price: `Rp ${Number(item.price || 0).toLocaleString("id-ID")}`,
+      priceValue: Number(item.price || 0),
+      category: item.category || "General",
+      material: item.material || "General",
+      description: item.description || "",
+      colors: [{ name: "Default", hex: "#d9d9d9" }],
+      images: [item.image_url || ""]
+    }));
+    console.log("Supabase products loaded:", data);
+  } else {
+    console.warn("Using fallback products because Supabase data is empty or unavailable.", error);
+  }
+
   if (shoppingSkeletons) {
     shoppingSkeletons.hidden = true;
   }
+  syncFilterOptions();
   applyFilters();
-}, 180);
+}
 
 productSearch.addEventListener("input", applyFilters);
 categoryFilter.addEventListener("change", applyFilters);
@@ -190,3 +257,5 @@ resetFilters.addEventListener("click", () => {
   sortFilter.value = "featured";
   applyFilters();
 });
+
+loadProducts();

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin | JF Furniture</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-page">
+  <header class="site-header">
+    <a class="brand" href="index.html">JF</a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a href="index.html">Home</a>
+      <a href="shopping.html">Shop</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <main class="admin-main">
+    <section class="admin-hero">
+      <p class="eyebrow">Admin Panel</p>
+      <h1>Add product without editing HTML</h1>
+      <p>Isi form di bawah ini, lalu produk akan langsung masuk ke database Supabase kamu.</p>
+    </section>
+
+    <section class="admin-panel admin-auth-panel" id="adminAuthPanel">
+      <div class="admin-list-head">
+        <div>
+          <p class="eyebrow">Admin Login</p>
+          <h2>Masuk dulu sebelum kelola produk</h2>
+        </div>
+      </div>
+
+      <form class="admin-form" id="adminLoginForm">
+        <label class="admin-field">
+          <span>Email</span>
+          <input id="adminEmail" name="email" type="email" required>
+        </label>
+
+        <label class="admin-field">
+          <span>Password</span>
+          <input id="adminPassword" name="password" type="password" required>
+        </label>
+
+        <div class="admin-actions">
+          <button class="button-primary admin-submit" type="submit">Login Admin</button>
+          <p class="admin-status" id="adminAuthStatus">Silakan login dengan akun admin Supabase kamu.</p>
+        </div>
+      </form>
+    </section>
+
+    <div id="adminApp" hidden>
+    <section class="admin-panel">
+      <div class="admin-topbar">
+        <p class="admin-session" id="adminSessionInfo">Logged in</p>
+        <button class="button-primary admin-secondary" type="button" id="adminLogoutButton">Logout</button>
+      </div>
+
+      <form class="admin-form" id="adminProductForm">
+        <div class="admin-grid">
+          <label class="admin-field">
+            <span>Product name</span>
+            <input id="adminName" name="name" type="text" required>
+          </label>
+
+          <label class="admin-field">
+            <span>Slug</span>
+            <input id="adminSlug" name="slug" type="text" required>
+          </label>
+
+          <label class="admin-field">
+            <span>Price</span>
+            <input id="adminPrice" name="price" type="number" min="0" required>
+          </label>
+
+          <label class="admin-field">
+            <span>Stock</span>
+            <input id="adminStock" name="stock" type="number" min="0" value="1" required>
+          </label>
+
+          <label class="admin-field">
+            <span>Category</span>
+            <input id="adminCategory" name="category" type="text" required>
+          </label>
+
+          <label class="admin-field">
+            <span>Material</span>
+            <input id="adminMaterial" name="material" type="text" required>
+          </label>
+        </div>
+
+        <label class="admin-field">
+          <span>Description</span>
+          <textarea id="adminDescription" name="description" rows="4" required></textarea>
+        </label>
+
+        <label class="admin-field">
+          <span>Image URL</span>
+          <input id="adminImageUrl" name="image_url" type="url" placeholder="URL gambar akan terisi otomatis setelah upload" required>
+        </label>
+
+        <label class="admin-field">
+          <span>Upload image file</span>
+          <input id="adminImageFile" name="image_file" type="file" accept="image/*">
+        </label>
+
+        <label class="admin-check">
+          <input id="adminFeatured" name="is_featured" type="checkbox" checked>
+          <span>Show as featured product</span>
+        </label>
+
+        <div class="admin-actions">
+          <button class="button-primary admin-upload" type="button" id="adminUploadButton">Upload Image</button>
+          <button class="button-primary admin-submit" type="submit">Save Product</button>
+          <button class="button-primary admin-secondary" type="button" id="adminCancelEditButton" hidden>Cancel Edit</button>
+          <p class="admin-status" id="adminStatus">Ready to save a new product.</p>
+        </div>
+      </form>
+    </section>
+
+    <section class="admin-panel admin-list-panel">
+      <div class="admin-list-head">
+        <div>
+          <p class="eyebrow">Product List</p>
+          <h2>Products in your store</h2>
+        </div>
+        <p class="admin-list-note" id="adminListSummary">Loading products...</p>
+      </div>
+
+      <div class="admin-product-list" id="adminProductList"></div>
+    </section>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
