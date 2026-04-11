@@ -5,6 +5,10 @@ const supabaseClient = window.supabase && typeof SUPABASE_URL !== "undefined" &&
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
   : null;
 
+function t(key, fallback) {
+  return window.JFLang?.t ? window.JFLang.t(key, fallback) : (fallback || key);
+}
+
 const mainImage = document.getElementById("mainProductImage");
 const thumbGallery = document.getElementById("thumbGallery");
 const productTitle = document.getElementById("productTitle");
@@ -37,6 +41,62 @@ function mapSupabaseProduct(item) {
     description: item.description || "Crafted for modern interiors with clean silhouettes and everyday comfort.",
     colors: [{ name: "Default", hex: "#d9d9d9" }],
     images: [item.image_url || ""]
+  };
+}
+
+function splitMaterialValues(materialText) {
+  return String(materialText || "")
+    .split(",")
+    .map((value) => value.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function getRecommendationReason(reasonCode) {
+  if (reasonCode === "category") {
+    return t("Similar category", "Similar category");
+  }
+  if (reasonCode === "material") {
+    return t("Similar material", "Similar material");
+  }
+  if (reasonCode === "price") {
+    return t("Closest price range", "Closest price range");
+  }
+  return t("Recommended for you", "Recommended for you");
+}
+
+function scoreRecommendation(item) {
+  if (!currentProduct) {
+    return { score: 0, reason: "default" };
+  }
+
+  const reasons = [];
+  let score = 0;
+
+  if (item.category && currentProduct.category && item.category === currentProduct.category) {
+    score += 55;
+    reasons.push("category");
+  }
+
+  const itemMaterials = splitMaterialValues(item.material);
+  const currentMaterials = splitMaterialValues(currentProduct.material);
+  const materialOverlap = itemMaterials.filter((material) => currentMaterials.includes(material)).length;
+  if (materialOverlap > 0) {
+    score += Math.min(36, materialOverlap * 18);
+    reasons.push("material");
+  }
+
+  const currentPrice = Number(currentProduct.priceValue || 0);
+  const itemPrice = Number(item.priceValue || 0);
+  const diff = Math.abs(currentPrice - itemPrice);
+  const priceScore = Math.max(0, 30 - Math.round(diff / 25000));
+  if (priceScore > 0) {
+    score += priceScore;
+    reasons.push("price");
+  }
+
+  return {
+    score,
+    reason: reasons[0] || "default"
   };
 }
 
@@ -93,6 +153,8 @@ function renderRecommendations() {
 
   productCollection
     .filter((item) => item.key !== currentProductKey)
+    .map((item) => ({ ...item, smart: scoreRecommendation(item) }))
+    .sort((a, b) => b.smart.score - a.smart.score)
     .slice(0, 3)
     .forEach((item) => {
       const card = document.createElement("a");
@@ -105,6 +167,7 @@ function renderRecommendations() {
         <div class="recommendation-body">
           <p>${item.category}</p>
           <h3>${item.title}</h3>
+          <span class="recommendation-reason">${getRecommendationReason(item.smart.reason)}</span>
           <strong>${item.price}</strong>
         </div>
       `;
@@ -121,6 +184,10 @@ function bindAddToCart() {
 
   const freshButton = addToCartButton.cloneNode(true);
   addToCartButton.replaceWith(freshButton);
+  const buttonTextNode = Array.from(freshButton.childNodes).find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
+  if (buttonTextNode) {
+    buttonTextNode.textContent = ` ${t("Add to cart", "Add to cart")}`;
+  }
 
   freshButton.addEventListener("click", () => {
     window.JFStore.addToCart({
@@ -208,3 +275,14 @@ async function initProductPage() {
 }
 
 initProductPage();
+
+window.addEventListener("jf:language-updated", () => {
+  const detailButton = document.getElementById("addToCartButton");
+  if (detailButton) {
+    const buttonTextNode = Array.from(detailButton.childNodes).find((node) => node.nodeType === Node.TEXT_NODE && node.textContent.trim().length > 0);
+    if (buttonTextNode) {
+      buttonTextNode.textContent = ` ${t("Add to cart", "Add to cart")}`;
+    }
+  }
+  renderRecommendations();
+});

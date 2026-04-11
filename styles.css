@@ -104,6 +104,34 @@ button {
   gap: 0.45rem;
 }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.2rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.lang-button {
+  border: 0;
+  min-width: 2rem;
+  padding: 0.3rem 0.45rem;
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.76);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+}
+
+.lang-button.is-active {
+  background: #f1dfc6;
+  color: #1f1b18;
+}
+
 .icon-button {
   width: 2.2rem;
   height: 2.2rem;
@@ -1666,6 +1694,19 @@ button {
   margin-top: 0.4rem;
 }
 
+.recommendation-reason {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.55rem;
+  padding: 0.34rem 0.64rem;
+  border-radius: 999px;
+  background: #ede6dd;
+  color: #5a534d;
+  font-size: 0.76rem;
+  letter-spacing: 0.03em;
+}
+
 .detail-cart-button {
   flex: 1;
   display: inline-flex;
@@ -2460,6 +2501,7 @@ button {
     grid-template-columns: auto auto 1fr auto;
     justify-items: stretch;
     gap: 0.8rem;
+    padding: 0.72rem 0.8rem;
   }
 
   .menu-toggle {
@@ -2482,10 +2524,38 @@ button {
 
   .brand {
     justify-self: start;
+    font-size: 1.35rem;
   }
 
   .header-actions {
     justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 0.28rem;
+    flex-wrap: nowrap;
+  }
+
+  .lang-switch {
+    margin-right: 0.1rem;
+    padding: 0.15rem;
+    gap: 0.15rem;
+  }
+
+  .lang-button {
+    min-width: 1.72rem;
+    padding: 0.24rem 0.34rem;
+    font-size: 0.62rem;
+  }
+
+  .icon-button {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .cart-count {
+    min-width: 1rem;
+    height: 1rem;
+    font-size: 0.62rem;
   }
 
   .hero {
@@ -2645,6 +2715,18 @@ button {
     display: grid;
   }
 
+  .shopping-card-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.65rem;
+  }
+
+  .shopping-detail-link,
+  .shopping-add-button {
+    width: 100%;
+    text-align: center;
+  }
+
   .checkout-main {
     padding-inline: 1rem;
   }
@@ -2652,5 +2734,10 @@ button {
   .checkout-hero,
   .checkout-card {
     padding: 1rem;
+  }
+
+  .recommendation-reason {
+    margin-top: 0.45rem;
+    margin-bottom: 0.45rem;
   }
 }

@@ -1,4 +1,8 @@
 const CART_KEY = "jf-furniture-cart";
+function t(key, fallback) {
+  return window.JFLang?.t ? window.JFLang.t(key, fallback) : (fallback || key);
+}
+
 function safeRead(key, fallback) {
   try {
     const stored = localStorage.getItem(key);
@@ -44,6 +48,30 @@ function showToast(message) {
     toast.classList.remove("is-visible");
     window.setTimeout(() => toast.remove(), 220);
   }, 2200);
+}
+
+function getAddedToCartMessage(title) {
+  return window.JFLang?.get?.() === "id"
+    ? `${title} ditambahkan ke keranjang`
+    : `${title} added to cart`;
+}
+
+function syncStaticCartText() {
+  document.querySelectorAll(".cart-kicker").forEach((node) => {
+    node.textContent = t("Your Cart", "Your Cart");
+  });
+  document.querySelectorAll(".cart-drawer-header h2").forEach((node) => {
+    node.textContent = t("Selected Items", "Selected Items");
+  });
+  document.querySelectorAll("[data-cart-empty]").forEach((node) => {
+    node.textContent = t("Your cart is still empty.", "Your cart is still empty.");
+  });
+  document.querySelectorAll(".cart-total-row span").forEach((node) => {
+    node.textContent = t("Total", "Total");
+  });
+  document.querySelectorAll(".cart-checkout").forEach((node) => {
+    node.textContent = t("Checkout", "Checkout");
+  });
 }
 
 function updateCartBadges(cart) {
@@ -106,7 +134,7 @@ function renderCartDrawer() {
     title.textContent = item.title;
 
     const meta = document.createElement("p");
-    meta.textContent = `${item.color || "Default"} - ${formatRupiah(item.priceValue)}`;
+    meta.textContent = `${item.color || t("Default", "Default")} - ${formatRupiah(item.priceValue)}`;
 
     const actions = document.createElement("div");
     actions.className = "cart-item-actions";
@@ -132,7 +160,7 @@ function renderCartDrawer() {
     const remove = document.createElement("button");
     remove.type = "button";
     remove.className = "cart-remove";
-    remove.textContent = "Remove";
+    remove.textContent = t("Remove", "Remove");
     remove.addEventListener("click", () => {
       saveCart(getCart().filter((cartItem) => cartItem.id !== item.id));
       renderCartDrawer();
@@ -147,6 +175,7 @@ function renderCartDrawer() {
 
   total.textContent = formatRupiah(grandTotal);
   updateCartBadges(cart);
+  syncStaticCartText();
 }
 
 function openCart() {
@@ -256,7 +285,7 @@ function addToCart(product) {
   saveCart(cart);
   renderCartDrawer();
   openCart();
-  showToast(`${product.title} added to cart`);
+  showToast(getAddedToCartMessage(product.title));
 }
 
 function initScrollReveal() {
@@ -314,6 +343,7 @@ function initAmbientMotion() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  syncStaticCartText();
   renderCartDrawer();
   syncBackToTopButton();
   initScrollReveal();
@@ -359,6 +389,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.addEventListener("scroll", syncBackToTopButton, { passive: true });
+});
+
+window.addEventListener("jf:language-updated", () => {
+  syncStaticCartText();
+  renderCartDrawer();
 });
 
 window.JFStore = {

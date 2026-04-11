@@ -18,6 +18,10 @@ const supabaseClient = window.supabase && typeof SUPABASE_URL !== "undefined" &&
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
   : null;
 
+function t(key, fallback) {
+  return window.JFLang?.t ? window.JFLang.t(key, fallback) : (fallback || key);
+}
+
 if (searchParams.has("q")) {
   productSearch.value = searchParams.get("q") || "";
 }
@@ -81,7 +85,7 @@ function populateDynamicFilterOptions(selectElement, values) {
   }
 
   const currentValue = selectElement.value || "all";
-  const label = selectElement.id === "categoryFilter" ? "All" : "All";
+  const label = t("All", "All");
   const uniqueValues = [...new Set(values.filter(Boolean))].sort((a, b) => a.localeCompare(b));
 
   selectElement.innerHTML = "";
@@ -107,12 +111,16 @@ function renderProducts(list, query) {
 
   if (list.length === 0) {
     shoppingEmpty.hidden = false;
-    resultSummary.textContent = "Showing 0 products";
+    resultSummary.textContent = t("Showing 0 products", "Showing 0 products");
     return;
   }
 
   shoppingEmpty.hidden = true;
-  resultSummary.textContent = `Showing ${list.length} product${list.length > 1 ? "s" : ""}`;
+  if (window.JFLang?.get?.() === "id") {
+    resultSummary.textContent = `Menampilkan ${list.length} produk`;
+  } else {
+    resultSummary.textContent = `Showing ${list.length} product${list.length > 1 ? "s" : ""}`;
+  }
 
   list.forEach((product) => {
     const card = document.createElement("article");
@@ -132,8 +140,8 @@ function renderProducts(list, query) {
         </div>
         <p class="shopping-card-copy">${highlightText(product.description, query)}</p>
         <div class="shopping-card-actions">
-          <a class="shopping-detail-link" href="product.html?product=${product.key}">View detail</a>
-          <button class="shopping-add-button" type="button">Add to cart</button>
+          <a class="shopping-detail-link" href="product.html?product=${product.key}">${t("View detail", "View detail")}</a>
+          <button class="shopping-add-button" type="button">${t("Add to cart", "Add to cart")}</button>
         </div>
       </div>
     `;
@@ -159,7 +167,7 @@ function renderActiveFilters() {
   const items = [];
 
   if (productSearch.value.trim()) {
-    items.push({ label: `Search: ${productSearch.value.trim()}`, clear: () => { productSearch.value = ""; } });
+    items.push({ label: `${t("Search", "Search")}: ${productSearch.value.trim()}`, clear: () => { productSearch.value = ""; } });
   }
   if (categoryFilter.value !== "all") {
     items.push({ label: categoryFilter.value, clear: () => { categoryFilter.value = "all"; } });
@@ -171,7 +179,7 @@ function renderActiveFilters() {
     items.push({ label: priceFilter.options[priceFilter.selectedIndex].text, clear: () => { priceFilter.value = "all"; } });
   }
   if (sortFilter.value !== "featured") {
-    items.push({ label: `Sort: ${sortFilter.options[sortFilter.selectedIndex].text}`, clear: () => { sortFilter.value = "featured"; } });
+    items.push({ label: `${t("Sort", "Sort")}: ${sortFilter.options[sortFilter.selectedIndex].text}`, clear: () => { sortFilter.value = "featured"; } });
   }
 
   activeFilters.innerHTML = "";
@@ -269,3 +277,8 @@ resetFilters.addEventListener("click", () => {
 });
 
 loadProducts();
+
+window.addEventListener("jf:language-updated", () => {
+  syncFilterOptions();
+  applyFilters();
+});

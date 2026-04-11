@@ -11,6 +11,10 @@ const checkoutPhone = document.getElementById("checkoutPhone");
 const checkoutAddress = document.getElementById("checkoutAddress");
 const WHATSAPP_ORDER_URL = "https://wa.me/6281227256442";
 
+function t(key, fallback) {
+  return window.JFLang?.t ? window.JFLang.t(key, fallback) : (fallback || key);
+}
+
 function getOrderSummary(cart) {
   const subtotal = cart.reduce((sum, item) => sum + item.priceValue * item.quantity, 0);
   const shipping = subtotal >= 300000 ? 0 : 30000;
@@ -50,7 +54,7 @@ function renderCheckout() {
       <img src="${item.image}" alt="${item.title}" loading="lazy" decoding="async">
       <div>
         <h3>${item.title}</h3>
-        <p>${item.color || "Default"} - Qty ${item.quantity}</p>
+        <p>${item.color || t("Default", "Default")} - ${t("Qty", "Qty")} ${item.quantity}</p>
       </div>
       <strong>${window.JFStore.formatRupiah(item.priceValue * item.quantity)}</strong>
     `;
@@ -76,19 +80,37 @@ function buildWhatsAppMessage(cart) {
     `   Total: ${window.JFStore.formatRupiah(item.priceValue * item.quantity)}`
   )).join("\n\n");
 
+  if (window.JFLang?.get?.() === "id") {
+    return [
+      "Halo JF Furniture, saya ingin order produk berikut:",
+      "",
+      itemsText,
+      "",
+      "Data Pembeli:",
+      `Nama: ${customerName}`,
+      `Email: ${customerEmail}`,
+      `No. HP: ${customerPhone}`,
+      `Alamat: ${customerAddress}`,
+      "",
+      `Subtotal: ${window.JFStore.formatRupiah(subtotal)}`,
+      `Ongkir: ${window.JFStore.formatRupiah(shipping)}`,
+      `Total: ${window.JFStore.formatRupiah(total)}`
+    ].join("\n");
+  }
+
   return [
-    "Halo JF Furniture, saya ingin order produk berikut:",
+    "Hello JF Furniture, I would like to order the following products:",
     "",
     itemsText,
     "",
-    "Data Pembeli:",
-    `Nama: ${customerName}`,
+    "Customer Details:",
+    `Name: ${customerName}`,
     `Email: ${customerEmail}`,
-    `No. HP: ${customerPhone}`,
-    `Alamat: ${customerAddress}`,
+    `Phone: ${customerPhone}`,
+    `Address: ${customerAddress}`,
     "",
     `Subtotal: ${window.JFStore.formatRupiah(subtotal)}`,
-    `Ongkir: ${window.JFStore.formatRupiah(shipping)}`,
+    `Shipping: ${window.JFStore.formatRupiah(shipping)}`,
     `Total: ${window.JFStore.formatRupiah(total)}`
   ].join("\n");
 }
@@ -101,7 +123,7 @@ if (placeOrderButton) {
 
     const cart = window.JFStore.getCart();
     if (cart.length === 0) {
-      window.JFStore.showToast("Your cart is still empty");
+      window.JFStore.showToast(t("Your cart is still empty.", "Your cart is still empty."));
       return;
     }
 
@@ -113,9 +135,10 @@ if (placeOrderButton) {
     const whatsappUrl = `${WHATSAPP_ORDER_URL}?text=${encodeURIComponent(message)}`;
 
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-    window.JFStore.showToast("WhatsApp order opened");
+    window.JFStore.showToast(t("WhatsApp order opened", "WhatsApp order opened"));
   });
 }
 
 renderCheckout();
 window.addEventListener("jf:cart-updated", renderCheckout);
+window.addEventListener("jf:language-updated", renderCheckout);

@@ -7,6 +7,10 @@ const supabaseClient = window.supabase && typeof SUPABASE_URL !== "undefined" &&
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
   : null;
 
+function t(key, fallback) {
+  return window.JFLang?.t ? window.JFLang.t(key, fallback) : (fallback || key);
+}
+
 if (heroSlider) {
   const track = heroSlider.querySelector("[data-hero-track]");
   const slides = Array.from(heroSlider.querySelectorAll("[data-hero-slide]"));
@@ -111,7 +115,7 @@ function renderHomeProducts(list) {
           <circle cx="10" cy="19" r="1.3"></circle>
           <circle cx="17" cy="19" r="1.3"></circle>
         </svg>
-        Add to cart
+        ${t("Add to cart", "Add to cart")}
       </button>
     `;
     fragment.appendChild(card);
@@ -150,3 +154,9 @@ async function loadHomeProducts() {
 }
 
 loadHomeProducts();
+
+window.addEventListener("jf:language-updated", () => {
+  document.querySelectorAll(".homepage-cart-button").forEach((button) => {
+    button.lastChild.textContent = ` ${t("Add to cart", "Add to cart")}`;
+  });
+});
